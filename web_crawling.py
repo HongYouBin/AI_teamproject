@@ -10,7 +10,7 @@ sys.stdout = open('output.txt', 'w')
 
 lst = []
 
-for i in range(1587, 1593):
+for i in range(1592, 1593):
     url = f"http://www.kbreport.com/player/detail/{i}"
     res = requests.get(url)
     res.raise_for_status()
@@ -31,7 +31,7 @@ for i in range(1587, 1593):
         continue
     idx = money.find('\r')
     money = money[5:idx]
-    #money = int(re.sub(",", "", money))
+    # money = int(re.sub(",", "", money))
     money = money.replace(',',"")
     position = str(soup.find("span", attrs={"class":"player-info-4"}).get_text())
     position = position[3:]
@@ -55,10 +55,11 @@ for i in range(1587, 1593):
         tmp['hold'] = hold
         tmp['save'] = save
     else:
-        numOfGames = stat[0]
+        numOfGames = stat[0].get_text()
         hit = stat[3].get_text()
         homerun = stat[4].get_text()
         stealing = stat[9].get_text()
+        tmp['numOfGames'] = numOfGames
         tmp['hit'] = hit
         tmp['homerun'] = homerun
         tmp['stealing'] = stealing
