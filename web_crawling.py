@@ -8,9 +8,12 @@ import sys
 
 #sys.stdout = open('output.txt', 'w') 
 
-lst = []
+hitterInput = []
+hitterOutput = []
+throwerInput= []
+throwerOutput = []
 
-for i in range(1335, 1340):
+for i in range(1000, 2000):
     url = f"http://www.kbreport.com/player/detail/{i}"
     res = requests.get(url)
     if res.status_code != 200:
@@ -20,55 +23,67 @@ for i in range(1335, 1340):
 
 
     tr = soup.find("tr", attrs={"class": "even"})
-    year = str(tr.find("td").get_text())
-    if tr == None or year != "2021":
+    if tr == None:
+        continue
+    year = int(tr.find("td").get_text())
+    if year != 2021:
         continue
     stat = tr.find_all("td", attrs={"class": "data"})
 
-    tmp = {}
+    tmp = []
 
     ageLst = soup.find_all("span", attrs={"class":"player-info-1"})
     age = ageLst[1].get_text()
-    age = age[3:5]
-    money = str(soup.find("span", attrs={"class":"player-info-8"}).get_text())
-    if money == ' ':
-        money = 3000
-    else:
+    age = int(age[3:5])
+    money = soup.find("span", attrs={"class":"player-info-8"}).get_text()
+    money = money.replace('\n', "")
+    if money == '':
+        money = 30000000
+    elif money[3] == '￦':
         idx = money.find('\r')
-        money = money[5:idx]
+        money = money[4:idx]
         # money = int(re.sub(",", "", money))
         money = money.replace(',',"")
+        money = int(money)
+    else:
+        idx = money.find('\r')
+        money = money[3:idx]
+        # money = int(re.sub(",", "", money))
+        money = money.replace(',',"")
+        money = int(money)
     position = str(soup.find("span", attrs={"class":"player-info-4"}).get_text())
     position = position[3:]
     position = position.replace('\n',"")
     position = position.replace('\r',"")
     position = position.replace('\t',"")
     
-    tmp['position'] = position
-    tmp['money'] = money
-    tmp['age'] = age
+    tmp.append(age)
 
     if position == "투수 ":
-        numOfGames = stat[6].get_text()
-        era = stat[13].get_text()
-        win = stat[0].get_text()
-        save = stat[2].get_text()
-        hold = stat[3].get_text()
-        tmp['numOfGames'] = numOfGames
-        tmp['era'] = era
-        tmp['win'] = win
-        tmp['hold'] = hold
-        tmp['save'] = save
+        numOfGames = int(stat[6].get_text())
+        era = float(stat[13].get_text())
+        win = int(stat[0].get_text())
+        save = int(stat[2].get_text())
+        hold = int(stat[3].get_text())
+        tmp.append(numOfGames)
+        tmp.append(era)
+        tmp.append(win)
+        tmp.append(hold)
+        tmp.append(save)
+        throwerInput.append(tmp)
+        throwerOutput.append(money)
     else:
-        numOfGames = stat[0].get_text()
-        hit = stat[3].get_text()
-        homerun = stat[4].get_text()
-        stealing = stat[9].get_text()
-        tmp['numOfGames'] = numOfGames
-        tmp['hit'] = hit
-        tmp['homerun'] = homerun
-        tmp['stealing'] = stealing
-    lst.append(tmp)
+        numOfGames = int(stat[0].get_text())
+        hit = float(stat[3].get_text())
+        homerun = int(stat[4].get_text())
+        stealing = float(stat[9].get_text())
+        tmp.append(numOfGames)
+        tmp.append(hit)
+        tmp.append(homerun)
+        tmp.append(stealing)
+        hitterInput.append(tmp)
+        hitterOutput.append(money)
+    #lst.append(tmp)
     #print(tmp)
     
 #print(lst)
@@ -77,5 +92,27 @@ for i in range(1335, 1340):
 
 
 
+sys.stdout = open('Input.txt', 'w') 
+print(hitterInput)
+print('\n', '\n', '\n')
+print(hitterOutput)
+print('\n', '\n', '\n')
+print(throwerOutput)
+print('\n', '\n', '\n')
+print(throwerInput)
+
+sys.stdout.close()
+
+# sys.stdout = open('hitterInput.txt', 'w') 
+# print(throwerInput)
+# sys.stdout.close()
+
+# sys.stdout = open('hitterInput.txt', 'w') 
+# print(hitterOutput)
+# sys.stdout.close()
+
+# sys.stdout = open('hitterInput.txt', 'w') 
+# print(throwerOutput)
+# sys.stdout.close()
 
 
