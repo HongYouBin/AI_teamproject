@@ -13,7 +13,9 @@ hitterOutput = []
 throwerInput= []
 throwerOutput = []
 
-for i in range(18, 2000):
+for i in range(1000, 1638):
+    if i == 1636: #or 1638:
+        continue
     url = f"http://www.kbreport.com/player/detail/{i}"
     res = requests.get(url)
     if res.status_code != 200:
@@ -45,6 +47,8 @@ for i in range(18, 2000):
         # money = int(re.sub(",", "", money))
         money = money.replace(',',"")
         money = int(money)
+    elif money[3] == '＄':
+        continue
     else:
         idx = money.find('\r')
         money = money[3:idx]
@@ -92,7 +96,7 @@ for i in range(18, 2000):
 
 
 
-sys.stdout = open('Input.txt', 'w') 
+sys.stdout = open('Input3.txt', 'w') 
 print(hitterInput)
 print('\n', '\n', '\n')
 print(hitterOutput)
