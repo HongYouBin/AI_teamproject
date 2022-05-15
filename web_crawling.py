@@ -13,7 +13,7 @@ hitterOutput = []
 throwerInput= []
 throwerOutput = []
 
-for i in range(1000, 2000):
+for i in range(18, 2000):
     url = f"http://www.kbreport.com/player/detail/{i}"
     res = requests.get(url)
     if res.status_code != 200:
