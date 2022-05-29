@@ -116,33 +116,37 @@ t = Hitterknn(10, lst)
 t.calDist()
 t.obtainVote()
 
-class PitcherKnn:  
-    def __init__(self, k, inputlst):
-        self.k = k 
-        self.outData = []
-        tmp = []
-        for i in range(6):
-            num = float(inputlst[i]-pMin[i])
-            num /= pMax[i]-pMin[i]
-            tmp.append(num)
-        self.inputData = tmp
-    def calDist(self):
-        for i in range(147): 
-            res = float(0) 
-            for t in range(6):
-                res += (float(pitcherInput[i][t])-float(self.inputData[t]))**2
-            res = res**(1/2) 
-            lst = [res, int(PitcherOutput[i])] 
-            self.outData.append(lst) 
-    def obtainVote(self):
-        self.outData.sort(key=lambda x:x[0])
-        sum = int(0)
-        for i in range(self.k):
-            sum += self.outData[i][1]
-        print(int(sum/self.k))
+
+
+
+
+# class PitcherKnn:  
+#     def __init__(self, k, inputlst):
+#         self.k = k 
+#         self.outData = []
+#         tmp = []
+#         for i in range(6):
+#             num = float(inputlst[i]-pMin[i])
+#             num /= pMax[i]-pMin[i]
+#             tmp.append(num)
+#         self.inputData = tmp
+#     def calDist(self):
+#         for i in range(147): 
+#             res = float(0) 
+#             for t in range(6):
+#                 res += (float(pitcherInput[i][t])-float(self.inputData[t]))**2
+#             res = res**(1/2) 
+#             lst = [res, int(PitcherOutput[i])] 
+#             self.outData.append(lst) 
+#     def obtainVote(self):
+#         self.outData.sort(key=lambda x:x[0])
+#         sum = int(0)
+#         for i in range(self.k):
+#             sum += self.outData[i][1]
+#         print(int(sum/self.k))
         
 
-lst = [30, 28, 4.88, 8, 0, 0]
-t = PitcherKnn(10, lst)
-t.calDist()
-t.obtainVote()
+# lst = [30, 28, 4.88, 8, 0, 0]
+# t = PitcherKnn(10, lst)
+# t.calDist()
+# t.obtainVote()

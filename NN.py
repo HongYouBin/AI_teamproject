@@ -42,7 +42,11 @@ import numpy as np
 p = tf.keras.layers.Input(shape=[6])
 
 
-h = tf.keras.layers.Dense(2)(p)
+h = tf.keras.layers.Dense(4)(p)
+h = tf.keras.layers.BatchNormalization()(h)
+h = tf.keras.layers.Activation('sigmoid')(h)
+
+h = tf.keras.layers.Dense(2)(h)
 h = tf.keras.layers.BatchNormalization()(h)
 h = tf.keras.layers.Activation('sigmoid')(h)
 
@@ -51,16 +55,8 @@ y = tf.keras.layers.Dense(5, activation='sigmoid')(h)
 
 model = tf.keras.models.Model(p, y)
 model.compile(optimizer='sgd', loss='mean_squared_error', metrics='accuracy')
-model.fit(np.array(pitcherInput), np.array(minPitcherOutput), epochs = 100)
+model.fit(np.array(pitcherInput), np.array(minPitcherOutput), epochs = 1000)
 
-pitcherPredict = model.predict([[23, 0, 4.91, 0, 0, 0]])
-print(pitcherPredict)
-sum = int(0)
-for i in pitcherPredict[0]:
-  sum += i
-sum /= 5
-sum *= 10000000
-print(int(sum))
 
 t = tf.keras.layers.Input(shape=[5])
 
@@ -77,13 +73,4 @@ y = tf.keras.layers.Dense(5, activation='sigmoid')(h)
 
 model = tf.keras.models.Model(t, y)
 model.compile(optimizer='sgd', loss='mean_squared_error', metrics='accuracy')
-model.fit(np.array(hitterInput), np.array(minHitterOutput), epochs = 100)
-
-hitterPredict = model.predict([[23, 20, 30, 0, 0]])
-print(hitterPredict)
-sum = int(0)
-for i in hitterPredict[0]:
-  sum += i
-sum /= 5
-sum *= 10000000
-print(int(sum))
+model.fit(np.array(hitterInput), np.array(minHitterOutput), epochs = 1000)
